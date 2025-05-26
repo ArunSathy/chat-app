@@ -27,8 +27,8 @@ export const userSocketMap = {}; // { userId: socketId}
 io.on('connection', (socket) => {
     const userId = socket.handshake.query.userId;
     console.log('User Connected', userId);
-    
-    if(userId) userSocketMap[userId] = socket.id;
+
+    if (userId) userSocketMap[userId] = socket.id;
 
     // emit online users to all connected users
 
@@ -57,5 +57,11 @@ app.use('/api/messages', messageRouter);
 // connect to mongodb database
 await connectDB();
 
-const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => console.log(`Server is running on PORT: ${PORT}`));
+if (process.env.NODE_ENV !== 'production') {
+    const PORT = process.env.PORT || 5000;
+    server.listen(PORT, () => console.log(`Server is running on PORT: ${PORT}`));
+}
+
+// export sever for vercel
+
+export default server;
